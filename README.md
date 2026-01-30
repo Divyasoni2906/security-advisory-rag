@@ -8,7 +8,10 @@ This project focuses on *depth over volume* by indexing a small set of real vuln
 See the uploaded video!
 
 ---
+## Snapshots
 <img width="1366" height="616" alt="Screenshot (289)" src="https://github.com/user-attachments/assets/c2dea00e-99a9-421e-9a50-7220435efe24" />
+When a query does not match any known GitHub Security Advisories, the application gracefully informs the user that no relevant results were found.
+<img width="1366" height="635" alt="Screenshot (291)" src="https://github.com/user-attachments/assets/0a7f0d8b-1d1d-496b-8174-5264f33f7222" />
 
 
 ## Why This Project?
