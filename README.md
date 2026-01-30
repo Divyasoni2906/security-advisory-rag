@@ -5,7 +5,8 @@ A curated **security knowledge system** that combines **authoritative vulnerabil
 This project focuses on *depth over volume* by indexing a small set of real vulnerabilities from real projects and explaining them using trusted sources.
 
 ---
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/6ff0cc2e-414b-4f7e-9405-8b6320b20e38" />
+<img width="1366" height="616" alt="Screenshot (289)" src="https://github.com/user-attachments/assets/c2dea00e-99a9-421e-9a50-7220435efe24" />
+
 
 ## Why This Project?
 
