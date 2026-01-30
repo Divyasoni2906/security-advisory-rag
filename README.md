@@ -5,7 +5,7 @@ A curated **security knowledge system** that combines **authoritative vulnerabil
 This project focuses on *depth over volume* by indexing a small set of real vulnerabilities from real projects and explaining them using trusted sources.
 
 ## 🎥 Demo Video
-[Click here to watch the demo](RAG_system.mp4)
+See the uploaded video!
 
 ---
 <img width="1366" height="616" alt="Screenshot (289)" src="https://github.com/user-attachments/assets/c2dea00e-99a9-421e-9a50-7220435efe24" />
