@@ -111,7 +111,7 @@ ADVISORY IDENTIFIER: {ghsa_id}
                     'package': package_name,
                     'url': f"https://github.com/advisories/{ghsa_id}",
                     'type': 'advisory',  # Important for filtering
-                    'search_terms': f"{ghsa_id} {package_name} {data.get('summary', '')}"
+                    'search_terms': f"{ghsa_id} {package_name} {data.get('summary', '')} prototype pollution sql injection redos path traversal ssrf command injection"
                 }
             )
         else:
@@ -133,7 +133,7 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 # ------------------------------------------------------------------
-# Your REAL vulnerabilities
+# REAL vulnerabilities
 # ------------------------------------------------------------------
 MY_VULNERABILITIES = [
     "GHSA-fr5h-rqp8-mj6g",  # next – SSRF
@@ -286,4 +286,3 @@ vectorstore = Chroma(
 )
 
 print(f"✓ Loaded {vectorstore._collection.count()} documents")
-

@@ -46,6 +46,8 @@ class QueryResponse(BaseModel):
     sources: List[SourceInfo]
     advisory_count: int
     tutorial_count: int
+    confidence_score: float = 0.0   # ← add
+    grounded: bool = False          # ← add
 
 # ------------------------------------------------------------------
 # Initialize (on startup)
@@ -92,7 +94,13 @@ def hybrid_retrieve(query: str, k: int = 8):
     
     final_docs = []
     
-    if query.startswith('GHSA-'):
+    import re
+
+    is_advisory_query = bool(
+        re.search(r"GHSA-[a-z0-9-]+", query, re.I)
+    )
+
+    if is_advisory_query:
         final_docs.extend(advisories[:3])
         final_docs.extend(tutorials[:5])
     else:
@@ -157,16 +165,23 @@ Context from GitHub advisories and YouTube tutorials:
 
 Question: {question}
 
-IMPORTANT: If GitHub advisory data is present, use it as the PRIMARY source.
-Supplement with tutorial content for conceptual understanding.
+Use GitHub advisories as the primary source when available.
+Use tutorial content only for explanation or examples.
 
-Provide:
-1. What this vulnerability is (technical definition)
-2. Why it matters (impact and risks)
-3. How to fix it (remediation steps)
-4. Additional learning (from tutorials)
+Answer only what is asked.
+Do not mix unrelated vulnerabilities or concepts.
+Do not assume facts not present in the context.
+If the context is insufficient, say "I don't know".
 
-Use markdown formatting for better readability.
+For vulnerability-specific questions:
+- Technical definition
+- Impact
+- Remediation
+
+For conceptual/comparison questions:
+- Direct explanation focused on the question
+
+Use concise markdown.
 """,
             input_variables=["context", "question"],
         )
@@ -190,12 +205,26 @@ Use markdown formatting for better readability.
                 advisory_id=doc.metadata.get('advisory_id') if source_type == 'advisory' else None
             ))
         
+        # Compute a simple confidence signal
+        advisory_boost = min(len(advisories) / 3.0, 1.0)  # 0–1
+        tutorial_fill  = min(len(tutorials)  / 5.0, 1.0)
+        confidence_score = round(0.7 * advisory_boost + 0.3 * tutorial_fill, 2)
+        grounded = len(advisories) > 0  # Only True if we have authoritative source
+
         return QueryResponse(
             answer=answer,
             sources=sources,
             advisory_count=len(advisories),
-            tutorial_count=len(tutorials)
+            tutorial_count=len(tutorials),
+            confidence_score=confidence_score,   
+            grounded=grounded,                   
         )
+        # return QueryResponse(
+        #     answer=answer,
+        #     sources=sources,
+        #     advisory_count=len(advisories),
+        #     tutorial_count=len(tutorials)
+        # )
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
