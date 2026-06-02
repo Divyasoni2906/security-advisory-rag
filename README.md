@@ -13,6 +13,10 @@ See the uploaded demo video.
 ---
 ## Snapshot
 <img width="1366" height="616" alt="Screenshot (289)" src="https://github.com/user-attachments/assets/c2dea00e-99a9-421e-9a50-7220435efe24" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/495a8335-a5f7-4b6d-8eef-42f711fb673a" />
+Model clearly says that " it does not know ".
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/b2a5423b-1d44-444e-b497-78b460d37f84" />
+
 
 ### Known Vulnerability Query
 
