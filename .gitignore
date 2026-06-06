@@ -12,10 +12,7 @@ venv/
 .env.local
 .env.production
 
-# Chroma / Vector DB
-my_cve_db/
-chroma/
-*.sqlite3
+
 
 # Logs
 *.log
