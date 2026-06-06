@@ -9,6 +9,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 load_dotenv()
 import os
 
@@ -92,10 +93,11 @@ def initialize_components():
     if vectorstore is None:
         print("Loading embeddings...")
 
-        embeddings = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={"device": "cpu"},
-            encode_kwargs={"normalize_embeddings": True}
+        
+
+        embeddings = HuggingFaceEndpointEmbeddings(
+            model="sentence-transformers/all-MiniLM-L6-v2",
+            huggingfacehub_api_token=os.getenv("HF_TOKEN")
         )
 
         print("Loading vectorstore...")
