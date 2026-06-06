@@ -7,7 +7,7 @@ The system answers questions about real-world vulnerabilities while clearly dist
 ---
 
 ## 🎥 Demo
-
+https://vulnerability-intelligence-system.vercel.app/
 See the uploaded demo video.
 
 ---
