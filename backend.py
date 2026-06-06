@@ -97,6 +97,7 @@ def initialize_components():
 
         embeddings = HuggingFaceEndpointEmbeddings(
             model="sentence-transformers/all-MiniLM-L6-v2",
+            task="feature-extraction",
             huggingfacehub_api_token=os.getenv("HF_TOKEN")
         )
 
