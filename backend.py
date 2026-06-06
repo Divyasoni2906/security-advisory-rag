@@ -57,33 +57,69 @@ class QueryResponse(BaseModel):
 vectorstore = None
 llm = None
 
-@app.on_event("startup")
-async def startup_event():
-    global vectorstore, llm
+# @app.on_event("startup")
+# async def startup_event():
+#     global vectorstore, llm
     
-    # Load embeddings
-    embeddings = HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"},
-        encode_kwargs={"normalize_embeddings": True}
-    )
+#     # Load embeddings
+#     embeddings = HuggingFaceEmbeddings(
+#         model_name="all-MiniLM-L6-v2",
+#         model_kwargs={"device": "cpu"},
+#         encode_kwargs={"normalize_embeddings": True}
+#     )
     
-    # Load vectorstore
-    vectorstore = Chroma(
-        persist_directory="./my_cve_db",
-        embedding_function=embeddings,
-        collection_name="my_vulnerabilities"
-    )
+#     # Load vectorstore
+#     vectorstore = Chroma(
+#         persist_directory="./my_cve_db",
+#         embedding_function=embeddings,
+#         collection_name="my_vulnerabilities"
+#     )
     
-    # Load LLM
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        temperature=0,
-        google_api_key=GOOGLE_API_KEY
-    )
+#     # Load LLM
+#     llm = ChatGoogleGenerativeAI(
+#         model="gemini-2.5-flash",
+#         temperature=0,
+#         google_api_key=GOOGLE_API_KEY
+#     )
     
-    print(f"✓ Loaded {vectorstore._collection.count()} documents")
+#     print(f"✓ Loaded {vectorstore._collection.count()} documents")
 
+vectorstore = None
+llm = None
+def initialize_components():
+    global vectorstore, llm
+
+    if vectorstore is None:
+        print("Loading embeddings...")
+
+        embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2",
+            model_kwargs={"device": "cpu"},
+            encode_kwargs={"normalize_embeddings": True}
+        )
+
+        print("Loading vectorstore...")
+
+        vectorstore = Chroma(
+            persist_directory="./my_cve_db",
+            embedding_function=embeddings,
+            collection_name="my_vulnerabilities"
+        )
+
+        print(
+            f"✓ Loaded {vectorstore._collection.count()} documents"
+        )
+
+    if llm is None:
+        print("Loading Gemini...")
+
+        llm = ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            temperature=0,
+            google_api_key=GOOGLE_API_KEY
+        )
+
+        print("✓ Gemini loaded")
 # ------------------------------------------------------------------
 # Retrieval Functions
 # ------------------------------------------------------------------
@@ -132,11 +168,17 @@ def format_docs(docs):
 # ------------------------------------------------------------------
 # API Endpoints
 # ------------------------------------------------------------------
+# @app.get("/")
+# async def root():
+#     return {
+#         "message": "Security RAG API",
+#         "documents": vectorstore._collection.count() if vectorstore else 0
+#     }
 @app.get("/")
 async def root():
     return {
         "message": "Security RAG API",
-        "documents": vectorstore._collection.count() if vectorstore else 0
+        "status": "running"
     }
 
 @app.get("/health")
@@ -150,6 +192,7 @@ async def health():
 @app.post("/query", response_model=QueryResponse)
 async def query_vulnerability(request: QueryRequest):
     """Main query endpoint"""
+    initialize_components()
     try:
         # Retrieve documents
         docs = hybrid_retrieve(request.query)
@@ -234,6 +277,7 @@ Use concise markdown.
 @app.get("/advisories")
 async def list_advisories():
     """List all indexed advisories"""
+    initialize_components()
     results = vectorstore.similarity_search("GHSA", k=20)
     advisories = [
         {
