@@ -11,10 +11,6 @@ from youtube_transcript_api._errors import NoTranscriptFound, TranscriptsDisable
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_core.prompts import PromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
-from langchain_google_genai import ChatGoogleGenerativeAI
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from requests.exceptions import SSLError, RequestException
@@ -31,9 +27,6 @@ if not GOOGLE_API_KEY:
 # ------------------------------------------------------------------
 # CONSTANTS
 # ------------------------------------------------------------------
-
-# TRANSCRIPT_CACHE = Path("transcript_cache")
-# TRANSCRIPT_CACHE.mkdir(exist_ok=True)
 
 
 conceptual_videos = [
@@ -76,30 +69,30 @@ def fetch_github_advisory(ghsa_id):
             
             # Create DETAILED content with ALL advisory info
             text = f"""GITHUB SECURITY ADVISORY: {ghsa_id}
-Advisory ID: {ghsa_id}
-GHSA Reference: {ghsa_id}
-CVE ID: {data.get('cve_id', 'N/A')}
-Package: {package_name}
-Severity: {data.get('severity', 'N/A')}
-=== VULNERABILITY SUMMARY ===
-{data.get('summary', 'N/A')}
-
-=== DETAILED DESCRIPTION ===
-{data.get('description', 'N/A')}
-
-=== AFFECTED VERSIONS ===
-{affected_versions}
-
-VULNERABILITY CLASS: {ghsa_id}
-
-=== ADVISORY METADATA ===
-This is the official GitHub Security Advisory {ghsa_id} for package {package_name}.
-Advisory URL: https://github.com/advisories/{ghsa_id}
-Published: {data.get('published_at', 'N/A')}
-Updated: {data.get('updated_at', 'N/A')}
-
-ADVISORY IDENTIFIER: {ghsa_id}
-"""
+                        Advisory ID: {ghsa_id}
+                        GHSA Reference: {ghsa_id}
+                        CVE ID: {data.get('cve_id', 'N/A')}
+                        Package: {package_name}
+                        Severity: {data.get('severity', 'N/A')}
+                        === VULNERABILITY SUMMARY ===
+                        {data.get('summary', 'N/A')}
+                        
+                        === DETAILED DESCRIPTION ===
+                        {data.get('description', 'N/A')}
+                        
+                        === AFFECTED VERSIONS ===
+                        {affected_versions}
+                        
+                        VULNERABILITY CLASS: {ghsa_id}
+                        
+                        === ADVISORY METADATA ===
+                        This is the official GitHub Security Advisory {ghsa_id} for package {package_name}.
+                        Advisory URL: https://github.com/advisories/{ghsa_id}
+                        Published: {data.get('published_at', 'N/A')}
+                        Updated: {data.get('updated_at', 'N/A')}
+                        
+                        ADVISORY IDENTIFIER: {ghsa_id}
+                        """
             
             return Document(
                 page_content=text,
