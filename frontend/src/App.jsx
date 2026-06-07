@@ -106,7 +106,7 @@ export default function SecurityRAGApp() {
                   onChange={(e) => setQueryType(e.target.value)}
                   className="w-4 h-4"
                 />
-                <span className="text-white">🔍 GHSA Advisory</span>
+                <span className="text-white">GHSA Advisory</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
@@ -116,7 +116,7 @@ export default function SecurityRAGApp() {
                   onChange={(e) => setQueryType(e.target.value)}
                   className="w-4 h-4"
                 />
-                <span className="text-white">💡 Security Concept</span>
+                <span className="text-white">Security Concept</span>
               </label>
             </div>
 
@@ -162,11 +162,11 @@ export default function SecurityRAGApp() {
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-blue-500/20 border border-blue-500/30 rounded-xl p-4">
-                <div className="text-blue-200 text-sm mb-1">📋 Advisories Found</div>
+                <div className="text-blue-200 text-sm mb-1">Advisories Found</div>
                 <div className="text-3xl font-bold text-white">{result.advisory_count}</div>
               </div>
               <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
-                <div className="text-green-200 text-sm mb-1">🎥 Tutorials Found</div>
+                <div className="text-green-200 text-sm mb-1">Tutorials Found</div>
                 <div className="text-3xl font-bold text-white">{result.tutorial_count}</div>
               </div>
             </div>
@@ -234,7 +234,7 @@ export default function SecurityRAGApp() {
 
         {/* Footer */}
         <div className="text-center mt-12 text-purple-300 text-sm">
-          🔐 Powered by LangChain + Google Gemini + ChromaDB
+           Powered by LangChain + Google Gemini + ChromaDB
         </div>
       </div>
     </div>
