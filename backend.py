@@ -49,41 +49,10 @@ class QueryResponse(BaseModel):
     sources: List[SourceInfo]
     advisory_count: int
     tutorial_count: int
-    confidence_score: float = 0.0   # ← add
-    grounded: bool = False          # ← add
 
 # ------------------------------------------------------------------
-# Initialize (on startup)
+# Initialize (lazy load)
 # ------------------------------------------------------------------
-vectorstore = None
-llm = None
-
-# @app.on_event("startup")
-# async def startup_event():
-#     global vectorstore, llm
-    
-#     # Load embeddings
-#     embeddings = HuggingFaceEmbeddings(
-#         model_name="all-MiniLM-L6-v2",
-#         model_kwargs={"device": "cpu"},
-#         encode_kwargs={"normalize_embeddings": True}
-#     )
-    
-#     # Load vectorstore
-#     vectorstore = Chroma(
-#         persist_directory="./my_cve_db",
-#         embedding_function=embeddings,
-#         collection_name="my_vulnerabilities"
-#     )
-    
-#     # Load LLM
-#     llm = ChatGoogleGenerativeAI(
-#         model="gemini-2.5-flash",
-#         temperature=0,
-#         google_api_key=GOOGLE_API_KEY
-#     )
-    
-#     print(f"✓ Loaded {vectorstore._collection.count()} documents")
 
 vectorstore = None
 llm = None
@@ -171,12 +140,7 @@ def format_docs(docs):
 # ------------------------------------------------------------------
 # API Endpoints
 # ------------------------------------------------------------------
-# @app.get("/")
-# async def root():
-#     return {
-#         "message": "Security RAG API",
-#         "documents": vectorstore._collection.count() if vectorstore else 0
-#     }
+
 @app.get("/")
 async def root():
     return {
@@ -208,29 +172,29 @@ async def query_vulnerability(request: QueryRequest):
         PROMPT = PromptTemplate(
             template="""You are a security expert specializing in vulnerability analysis.
 
-Context from GitHub advisories and YouTube tutorials:
-{context}
-
-Question: {question}
-
-Use GitHub advisories as the primary source when available.
-Use tutorial content only for explanation or examples.
-
-Answer only what is asked.
-Do not mix unrelated vulnerabilities or concepts.
-Do not assume facts not present in the context.
-If the context is insufficient, say "I don't know".
-
-For vulnerability-specific questions:
-- Technical definition
-- Impact
-- Remediation
-
-For conceptual/comparison questions:
-- Direct explanation focused on the question
-
-Use concise markdown.
-""",
+                        Context from GitHub advisories and YouTube tutorials:
+                        {context}
+                        
+                        Question: {question}
+                        
+                        Use GitHub advisories as the primary source when available.
+                        Use tutorial content only for explanation or examples.
+                        
+                        Answer only what is asked.
+                        Do not mix unrelated vulnerabilities or concepts.
+                        Do not assume facts not present in the context.
+                        If the context is insufficient, say "I don't know".
+                        
+                        For vulnerability-specific questions:
+                        - Technical definition
+                        - Impact
+                        - Remediation
+                        
+                        For conceptual/comparison questions:
+                        - Direct explanation focused on the question
+                        
+                        Use concise markdown.
+                        """,
             input_variables=["context", "question"],
         )
         
@@ -252,27 +216,16 @@ Use concise markdown.
                 url=doc.metadata.get('url'),
                 advisory_id=doc.metadata.get('advisory_id') if source_type == 'advisory' else None
             ))
-        
-        # Compute a simple confidence signal
-        advisory_boost = min(len(advisories) / 3.0, 1.0)  # 0–1
-        tutorial_fill  = min(len(tutorials)  / 5.0, 1.0)
-        confidence_score = round(0.7 * advisory_boost + 0.3 * tutorial_fill, 2)
-        grounded = len(advisories) > 0  # Only True if we have authoritative source
+      
 
         return QueryResponse(
             answer=answer,
             sources=sources,
             advisory_count=len(advisories),
             tutorial_count=len(tutorials),
-            confidence_score=confidence_score,   
-            grounded=grounded,                   
+                             
         )
-        # return QueryResponse(
-        #     answer=answer,
-        #     sources=sources,
-        #     advisory_count=len(advisories),
-        #     tutorial_count=len(tutorials)
-        # )
+     
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
