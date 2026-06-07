@@ -94,6 +94,16 @@ def fetch_github_advisory(ghsa_id):
                         ADVISORY IDENTIFIER: {ghsa_id}
                         """
             
+            terms_list = [ghsa_id, package_name, data.get('summary', '')]
+            
+   
+            if data.get('cwes'):
+                for cwe in data['cwes']:
+                    terms_list.append(cwe.get('cwe_id', '')) # e.g., "CWE-918"
+                    terms_list.append(cwe.get('name', ''))   # e.g., "Server-Side Request Forgery (SSRF)"
+        
+            search_terms_string = " ".join([str(t) for t in terms_list if t]).lower()
+            
             return Document(
                 page_content=text,
                 metadata={
@@ -104,8 +114,7 @@ def fetch_github_advisory(ghsa_id):
                     'package': package_name,
                     'url': f"https://github.com/advisories/{ghsa_id}",
                     'type': 'advisory',  # Important for filtering
-                    'search_terms': f"{ghsa_id} {package_name} {data.get('summary', '')} prototype pollution sql injection redos path traversal ssrf command injection"
-                }
+                    'search_terms': search_terms_string}
             )
         else:
             print(f"❌ Error fetching {ghsa_id}: HTTP {response.status_code}")
