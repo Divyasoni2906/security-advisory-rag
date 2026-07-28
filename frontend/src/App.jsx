@@ -62,23 +62,25 @@ export default function SecurityRAGApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 antialiased selection:bg-zinc-800 selection:text-white">
+      <div className="container mx-auto px-4 py-10 max-w-5xl">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Shield className="w-12 h-12 text-purple-400" />
-            <h1 className="text-5xl font-bold text-white">Security RAG</h1>
+        <div className="text-center mb-10">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-100">
+              <Shield className="w-8 h-8 text-zinc-100" />
+            </div>
+            <h1 className="text-4xl font-bold tracking-tight text-white">Security RAG</h1>
           </div>
-          <p className="text-purple-200 text-lg">
+          <p className="text-zinc-400 text-sm max-w-md mx-auto">
             Query GitHub Security Advisories & Educational Tutorials
           </p>
         </div>
 
         {/* Quick Queries */}
-        <div className="mb-8">
-          <h3 className="text-white text-sm font-semibold mb-3 flex items-center gap-2">
-            <BookOpen className="w-4 h-4" />
+        <div className="mb-6">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-3 flex items-center gap-2">
+            <BookOpen className="w-3.5 h-3.5 text-zinc-400" />
             Quick Searches
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -86,7 +88,7 @@ export default function SecurityRAGApp() {
               <button
                 key={q}
                 onClick={() => handleQuickQuery(q)}
-                className="px-4 py-2 bg-purple-800/50 hover:bg-purple-700/50 text-purple-100 rounded-lg transition-colors text-sm font-medium border border-purple-600/30"
+                className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white rounded-lg transition-colors text-xs font-mono font-medium border border-zinc-800"
               >
                 {q}
               </button>
@@ -95,28 +97,28 @@ export default function SecurityRAGApp() {
         </div>
 
         {/* Search Panel */}
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 border border-white/20">
+        <div className="bg-zinc-900/90 border border-zinc-800 rounded-xl p-5 mb-8 shadow-sm">
           <div className="space-y-4">
-            <div className="flex gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
+            <div className="flex gap-6 text-xs font-medium tracking-wide">
+              <label className="flex items-center gap-2 cursor-pointer text-zinc-300 hover:text-white transition-colors">
                 <input
                   type="radio"
                   value="advisory"
                   checked={queryType === 'advisory'}
                   onChange={(e) => setQueryType(e.target.value)}
-                  className="w-4 h-4"
+                  className="w-4 h-4 accent-white bg-zinc-950 border-zinc-800 focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="text-white">GHSA Advisory</span>
+                <span>GHSA Advisory</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer text-zinc-300 hover:text-white transition-colors">
                 <input
                   type="radio"
                   value="concept"
                   checked={queryType === 'concept'}
                   onChange={(e) => setQueryType(e.target.value)}
-                  className="w-4 h-4"
+                  className="w-4 h-4 accent-white bg-zinc-950 border-zinc-800 focus:ring-0 focus:ring-offset-0"
                 />
-                <span className="text-white">Security Concept</span>
+                <span>Security Concept</span>
               </label>
             </div>
 
@@ -127,17 +129,17 @@ export default function SecurityRAGApp() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder={queryType === 'advisory' ? 'e.g., GHSA-fr5h-rqp8-mj6g' : 'e.g., SSRF, command injection'}
-                className="flex-1 px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="flex-1 px-4 py-2.5 bg-zinc-950 border border-zinc-800 rounded-lg text-zinc-100 placeholder-zinc-500 text-sm focus:outline-none focus:border-zinc-600 focus:ring-1 focus:ring-zinc-600 transition-all font-mono"
               />
               <button
                 onClick={handleSubmit}
                 disabled={loading || !query.trim()}
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-xl font-semibold flex items-center gap-2 transition-colors"
+                className="px-5 py-2.5 bg-zinc-100 hover:bg-white disabled:bg-zinc-800 disabled:text-zinc-600 disabled:cursor-not-allowed text-zinc-950 rounded-lg font-semibold text-sm flex items-center gap-2 transition-all"
               >
                 {loading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-zinc-950" />
                 ) : (
-                  <Search className="w-5 h-5" />
+                  <Search className="w-4 h-4 text-zinc-950" />
                 )}
                 {loading ? 'Searching...' : 'Search'}
               </button>
@@ -147,11 +149,11 @@ export default function SecurityRAGApp() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 mb-8 flex items-start gap-3">
+          <div className="bg-red-950/30 border border-red-900/50 rounded-xl p-4 mb-8 flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-            <div>
+            <div className="text-sm">
               <h3 className="text-red-400 font-semibold">Error</h3>
-              <p className="text-red-200">{error}</p>
+              <p className="text-red-300/80">{error}</p>
             </div>
           </div>
         )}
@@ -161,55 +163,53 @@ export default function SecurityRAGApp() {
           <div className="space-y-6">
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-500/20 border border-blue-500/30 rounded-xl p-4">
-                <div className="text-blue-200 text-sm mb-1">Advisories Found</div>
-                <div className="text-3xl font-bold text-white">{result.advisory_count}</div>
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <div className="text-zinc-400 text-xs font-medium uppercase tracking-wider mb-1">Advisories Found</div>
+                <div className="text-3xl font-bold text-white font-mono">{result.advisory_count}</div>
               </div>
-              <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
-                <div className="text-green-200 text-sm mb-1">Tutorials Found</div>
-                <div className="text-3xl font-bold text-white">{result.tutorial_count}</div>
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                <div className="text-zinc-400 text-xs font-medium uppercase tracking-wider mb-1">Tutorials Found</div>
+                <div className="text-3xl font-bold text-white font-mono">{result.tutorial_count}</div>
               </div>
             </div>
 
             {/* Answer */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <Shield className="w-6 h-6 text-purple-400" />
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+              <h2 className="text-base font-semibold text-white mb-4 flex items-center gap-2 border-b border-zinc-800 pb-3">
+                <Shield className="w-4 h-4 text-zinc-400" />
                 Analysis
               </h2>
               <div className="prose prose-invert max-w-none">
-                <div className="text-purple-100 whitespace-pre-wrap leading-relaxed">
+                <div className="text-zinc-300 whitespace-pre-wrap leading-relaxed text-sm">
                   {result.answer}
                 </div>
               </div>
             </div>
 
             {/* Sources */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-purple-400" />
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+              <h3 className="text-base font-semibold text-white mb-4 flex items-center gap-2 border-b border-zinc-800 pb-3">
+                <BookOpen className="w-4 h-4 text-zinc-400" />
                 Sources ({result.sources.length})
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {result.sources.map((source, idx) => (
                   <div
                     key={idx}
-                    className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-colors"
+                    className="bg-zinc-950/60 border border-zinc-800/80 rounded-lg p-3.5 hover:border-zinc-700 transition-colors"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          {source.type === 'advisory' ? (
-                            <span className="text-blue-400">📋</span>
-                          ) : (
-                            <span className="text-green-400">🎥</span>
-                          )}
-                          <h4 className="font-semibold text-white">
+                          <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                            {source.type}
+                          </span>
+                          <h4 className="font-medium text-zinc-200 text-sm truncate">
                             {source.title}
                           </h4>
                         </div>
                         {source.advisory_id && (
-                          <p className="text-purple-300 text-sm">
+                          <p className="text-zinc-400 font-mono text-xs mt-1">
                             {source.advisory_id}
                           </p>
                         )}
@@ -219,7 +219,7 @@ export default function SecurityRAGApp() {
                           href={source.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-purple-300 hover:text-purple-200 text-sm"
+                          className="p-1 text-zinc-500 hover:text-white transition-colors"
                         >
                           <ExternalLink className="w-4 h-4" />
                         </a>
@@ -233,8 +233,8 @@ export default function SecurityRAGApp() {
         )}
 
         {/* Footer */}
-        <div className="text-center mt-12 text-purple-300 text-sm">
-           Powered by LangChain + Google Gemini + ChromaDB
+        <div className="text-center mt-12 text-zinc-500 text-xs font-mono">
+          Powered by LangChain • Google Gemini • ChromaDB
         </div>
       </div>
     </div>
