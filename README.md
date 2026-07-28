@@ -12,10 +12,11 @@ See the uploaded demo video.
 
 ---
 ## Snapshot
-<img width="1366" height="616" alt="Screenshot (289)" src="https://github.com/user-attachments/assets/c2dea00e-99a9-421e-9a50-7220435efe24" />
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/495a8335-a5f7-4b6d-8eef-42f711fb673a" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/b2d09563-543c-47b7-af5c-18cae7a1c6e6" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/97120c3c-ff17-4fc3-b69c-c3d14bcf89be" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/de4592d3-8cda-4e0f-ae01-6ba9387dab88" />
 Model clearly says that " it does not know ".
-<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/b2a5423b-1d44-444e-b497-78b460d37f84" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/acfbc174-adc1-4603-815d-54ddd2f4e9c3" />
 
 
 ### Known Vulnerability Query
